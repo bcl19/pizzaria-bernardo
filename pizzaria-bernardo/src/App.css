@@ -1,71 +1,123 @@
-/* Fundo com imagem */
+/* Reset e base */
+* { box-sizing: border-box; }
+html, body, #root { height: 100%; }
 body {
   margin: 0;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-image: url('./img/pizzaria.jpeg');
+  font-family: 'Poppins', system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  color: #fff;
+}
+
+/* Página com imagem de fundo e overlay */
+.page {
+  position: relative;
+  min-height: 100vh;
   background-size: cover;
   background-position: center;
-  background-attachment: fixed;
-  color: #fff;
-  
-}
-
-/* Overlay para dar contraste */
-.overlay {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  min-height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6); /* efeito escuro por cima da imagem */
-}
-
-/* Caixa de login */
-.login-box {
-  background: rgba(255, 255, 255, 0.1);
-  padding: 40px;
-  border-radius: 16px;
-  backdrop-filter: blur(8px);
-  box-shadow: 0 4px 20px rgba(0,0,0,0.5);
-  text-align: center;
-  width: 320px;
-}
-
-/* Título */
-.title {
-  font-size: 1.8rem;
-  color: #ff4444;
-  text-shadow: 2px 2px 6px #000;
-  margin-bottom: 20px;
-}
-
-/* Inputs */
-.form {
+  background-repeat: no-repeat;
   display: flex;
   flex-direction: column;
-  gap: 15px;
+  align-items: center;
 }
 
-.form input {
-  padding: 12px;
-  border: none;
+.overlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.45);
+}
+
+.brand {
+  position: relative;
+  z-index: 2;
+  margin-top: 30px;
+  text-align: center;
+}
+
+.brand h1 {
+  margin: 0;
+  color: #ffe4b5;
+  text-shadow: 2px 2px 6px rgba(0,0,0,0.6);
+}
+
+/* Card central */
+.card {
+  position: relative;
+  z-index: 2;
+  background: rgba(255,255,255,0.08);
+  padding: 24px;
+  border-radius: 12px;
+  width: 320px;
+  margin: 40px 16px;
+  box-shadow: 0 6px 18px rgba(0,0,0,0.5);
+  text-align: center;
+}
+
+.card-main {
+  max-width: 720px;
+}
+
+.input {
+  display: block;
+  width: 100%;
+  padding: 10px 12px;
+  margin: 10px 0;
   border-radius: 8px;
-  outline: none;
+  border: none;
   font-size: 1rem;
 }
 
-/* Botão */
-.form button {
-  padding: 12px;
+.input:focus { outline: none; box-shadow: 0 0 8px rgba(255, 215, 0, 0.7); }
+
+.botao {
+  display: inline-block;
+  background: linear-gradient(180deg, #ffb347, #ff8c00);
+  color: #4b0000;
   border: none;
-  border-radius: 8px;
-  background: #ff4444;
-  color: white;
-  font-size: 1rem;
-  font-weight: bold;
+  padding: 10px 18px;
+  border-radius: 10px;
+  font-weight: 700;
   cursor: pointer;
-  transition: 0.3s;
+  margin-top: 8px;
+  text-decoration: none;
 }
 
-.form button:hover {
-  background: #cc0000;
+.botao:hover { transform: translateY(-2px); }
+
+.botao-secundario {
+  background: rgba(0,0,0,0.6);
+  color: #fff;
+}
+
+.link { color: #ffd700; text-decoration: none; font-weight: 600; }
+.link:hover { text-decoration: underline; }
+
+.footer {
+  position: relative;
+  z-index: 2;
+  margin-top: auto;
+  padding: 18px 0;
+  color: rgba(255,255,255,0.8);
+}
+
+.navbar {
+  position: relative;
+  z-index: 2;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 24px;
+}
+
+.nav-brand { font-weight: 800; color: #fff; }
+.nav-links { display: flex; gap: 12px; }
+.nav-link { color: #fff; text-decoration: none; font-weight: 600; }
+.nav-link:hover { text-decoration: underline; }
+
+.lista-pizzas { list-style: none; padding: 0; margin: 12px 0; }
+.lista-pizzas li { margin: 6px 0; font-size: 1.05rem; }
+
+/* Responsividade */
+@media (min-width: 768px) {
+  .card { width: 380px; }
+  .page-auth .card { margin-top: 80px; }
 }

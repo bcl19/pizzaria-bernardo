@@ -9,7 +9,6 @@ const PORT = 3000
 app.use(cors())
 app.use(bodyParser.json())
 
-// Conexão com MongoDB (Atlas ou local)
 mongoose.connect("mongodb://127.0.0.1:27017/pizzaria", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
@@ -17,7 +16,6 @@ mongoose.connect("mongodb://127.0.0.1:27017/pizzaria", {
 .then(() => console.log("✅ Conectado ao MongoDB"))
 .catch(err => console.error("❌ Erro ao conectar:", err))
 
-// Modelo de usuário
 const UsuarioSchema = new mongoose.Schema({
   email: { type: String, required: true, unique: true },
   senha: { type: String, required: true }
@@ -25,7 +23,6 @@ const UsuarioSchema = new mongoose.Schema({
 
 const Usuario = mongoose.model("Usuario", UsuarioSchema)
 
-// Rota de cadastro
 app.post("/register", async (req, res) => {
   const { email, senha } = req.body
 
@@ -44,7 +41,6 @@ app.post("/register", async (req, res) => {
   }
 })
 
-// Rota de login
 app.post("/login", async (req, res) => {
   const { email, senha } = req.body
 
