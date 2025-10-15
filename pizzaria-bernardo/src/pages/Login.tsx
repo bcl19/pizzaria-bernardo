@@ -9,28 +9,28 @@ const Login: React.FC = () => {
   const [msg, setMsg] = useState("")
 
   const handleLogin = async () => {
-    try {
-      const response = await fetch("/api/login", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, senha: password }),
-      })
+  try {
+    const response = await fetch("http://localhost:5000/api/auth/login", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email, password }),
+    });
 
-      const data = await response.json()
+    const data = await response.json();
 
-      if (data.success) {
-        setMsg(data.message)
-        // salva o email do usuário logado (pode ser útil para pedidos)
-        localStorage.setItem("usuarioEmail", email)
-        navigate("/principal")
-      } else {
-        setMsg(data.message || "Email ou senha inválidos ❌")
-      }
-    } catch (error) {
-      setMsg("Erro ao conectar com o servidor 😕")
+    if (response.ok && data.token) {
+      // Login bem-sucedido
+      localStorage.setItem("token", data.token); // salva o JWT
+      localStorage.setItem("usuarioEmail", email);
+      navigate("/principal");
+    } else {
+      setMsg(data.error || "Email ou senha inválidos ❌");
     }
+  } catch (err) {
+    console.error(err);
+    setMsg("Erro ao conectar com o servidor 😕");
   }
-
+};
   return (
     <div className="page page-auth page-login">
       <div className="overlay" />
