@@ -1,23 +1,31 @@
-import { createContext, useState, ReactNode, useContext } from 'react';
+import React, { createContext, useState } from "react";
+import type { ReactNode } from "react";
 
-interface User {
+export interface User {
   email: string;
 }
 
-interface AuthContextType {
+export interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => boolean;
   signup: (email: string, password: string) => boolean;
   logout: () => void;
 }
 
-const AuthContext = createContext<AuthContextType | undefined>(undefined);
+interface AuthProviderProps {
+  children: ReactNode;
+}
 
-export const AuthProvider = ({ children }: { children: ReactNode }) => {
+// Cria o contexto
+// eslint-disable-next-line react-refresh/only-export-components
+export const AuthContext = createContext<AuthContextType | null>(null);
+
+// Componente Provider
+export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null);
-  const [usersDB, setUsersDB] = useState<{ email: string; password: string }[]>([]); // simula DB
+  const [usersDB, setUsersDB] = useState<Array<{ email: string; password: string }>>([]);
 
-  const signup = (email: string, password: string) => {
+  const signup = (email: string, password: string): boolean => {
     const exists = usersDB.find(u => u.email === email);
     if (exists) return false; // usuário já existe
     setUsersDB([...usersDB, { email, password }]);
@@ -25,7 +33,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     return true;
   };
 
-  const login = (email: string, password: string) => {
+  const login = (email: string, password: string): boolean => {
     const found = usersDB.find(u => u.email === email && u.password === password);
     if (found) {
       setUser({ email });
@@ -41,10 +49,4 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       {children}
     </AuthContext.Provider>
   );
-};
-
-export const useAuth = () => {
-  const context = useContext(AuthContext);
-  if (!context) throw new Error('useAuth deve ser usado dentro de AuthProvider');
-  return context;
 };

@@ -9,6 +9,7 @@ body {
 
 /* Página com imagem de fundo e overlay */
 .page {
+background-image: url(./img/pizza.jpeg);
   position: relative;
   min-height: 100vh;
   background-size: cover;

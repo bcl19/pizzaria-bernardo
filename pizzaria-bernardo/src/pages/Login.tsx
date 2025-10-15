@@ -1,7 +1,7 @@
 import { Link, useNavigate } from "react-router-dom";
 import "../App.css";
 import { useState } from "react";
-import { useAuth } from "./AuthContext";
+import { useAuth } from "../hooks/useAuth";
 
 const Login: React.FC = () => {
   const { login } = useAuth();
@@ -13,9 +13,9 @@ const Login: React.FC = () => {
   const handleLogin = () => {
     const success = login(email, password);
     if (success) {
-      navigate("/principal"); // redireciona se login for bem-sucedido
+      navigate("/principal");
     } else {
-      setMsg("Email ou senha inválidos"); // mensagem de erro
+      setMsg("Email ou senha inválidos");
     }
   };
 
@@ -47,10 +47,7 @@ const Login: React.FC = () => {
         </button>
         <p className="small">{msg}</p>
         <p className="small">
-          Ainda não tem conta?{" "}
-          <Link to="/cadastro" className="link">
-            Cadastre-se
-          </Link>
+          Ainda não tem conta? <Link to="/cadastro" className="link">Cadastre-se</Link>
         </p>
       </main>
 

@@ -1,30 +1,28 @@
-import { Link } from "react-router-dom";
+import { useAuth } from "../hooks/useAuth";
+import { useNavigate } from "react-router-dom";
 import "../App.css";
 
 const Principal: React.FC = () => {
-  return (
-    <div className="page page-main">
-      <div className="overlay" />
-      <nav className="navbar">
-        <div className="nav-brand">🍕 Dev</div>
-        <div className="nav-links">
-          <Link className="nav-link" to="#">Cardápio</Link>
-          <Link className="nav-link" to="#">Contato</Link>
-          <Link className="nav-link" to="/">Sair</Link>
-        </div>
-      </nav>
+  const { user, logout } = useAuth();
+  const navigate = useNavigate();
 
-      <main className="card card-main">
-        <h1>Bem-vindo à Pizzaria do Dev by bcl19!</h1>
-        <p>Escolha uma das nossas deliciosas pizzas:</p>
-        <ul className="lista-pizzas">
-          <li>🍕 Calabresa</li>
-          <li>🍕 Frango com Catupiry</li>
-          <li>🍕 Quatro Queijos</li>
-          <li>🍕 Portuguesa</li>
-          <li>🍕 Marguerita</li>
-        </ul>
-        <Link to="/" className="botao botao-secundario">Sair</Link>
+  const handleLogout = () => {
+    logout();
+    navigate("/"); // volta para login
+  };
+
+  return (
+    <div className="page page-principal">
+      <header className="brand">
+        <h1>🍕 Pizzaria do Dev</h1>
+      </header>
+
+      <main className="card">
+        <h2>Bem-vindo {user?.email}</h2>
+        <p>Escolha sua pizza e aproveite!</p>
+        <button className="botao" onClick={handleLogout}>
+          Logout
+        </button>
       </main>
 
       <footer className="footer">© Bernardo Chimelli</footer>
