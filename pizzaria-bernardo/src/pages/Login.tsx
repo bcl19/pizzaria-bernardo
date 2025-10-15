@@ -1,23 +1,35 @@
-import { Link, useNavigate } from "react-router-dom";
-import "../App.css";
-import { useState } from "react";
-import { useAuth } from "../hooks/useAuth";
+import { Link, useNavigate } from "react-router-dom"
+import "../App.css"
+import { useState } from "react"
 
 const Login: React.FC = () => {
-  const { login } = useAuth();
-  const navigate = useNavigate();
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [msg, setMsg] = useState("");
+  const navigate = useNavigate()
+  const [email, setEmail] = useState("")
+  const [password, setPassword] = useState("")
+  const [msg, setMsg] = useState("")
 
-  const handleLogin = () => {
-    const success = login(email, password);
-    if (success) {
-      navigate("/principal");
-    } else {
-      setMsg("Email ou senha inválidos");
+  const handleLogin = async () => {
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, senha: password }),
+      })
+
+      const data = await response.json()
+
+      if (data.success) {
+        setMsg(data.message)
+        // salva o email do usuário logado (pode ser útil para pedidos)
+        localStorage.setItem("usuarioEmail", email)
+        navigate("/principal")
+      } else {
+        setMsg(data.message || "Email ou senha inválidos ❌")
+      }
+    } catch (error) {
+      setMsg("Erro ao conectar com o servidor 😕")
     }
-  };
+  }
 
   return (
     <div className="page page-auth page-login">
@@ -47,13 +59,16 @@ const Login: React.FC = () => {
         </button>
         <p className="small">{msg}</p>
         <p className="small">
-          Ainda não tem conta? <Link to="/cadastro" className="link">Cadastre-se</Link>
+          Ainda não tem conta?{" "}
+          <Link to="/cadastro" className="link">
+            Cadastre-se
+          </Link>
         </p>
       </main>
 
       <footer className="footer">© Bernardo Chimelli</footer>
     </div>
-  );
-};
+  )
+}
 
-export default Login;
+export default Login

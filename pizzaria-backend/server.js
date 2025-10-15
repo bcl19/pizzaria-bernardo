@@ -1,61 +1,57 @@
-const express = require("express")
-const cors = require("cors")
-const bodyParser = require("body-parser")
-const mongoose = require("mongoose")
+// backend/server.js
+const express = require("express");
+const cors = require("cors");
+const bodyParser = require("body-parser");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
+const db = require("./db");
 
-const app = express()
-const PORT = 3000
+const app = express();
+app.use(cors());
+app.use(bodyParser.json());
 
-app.use(cors())
-app.use(bodyParser.json())
+const SECRET = "segredo_da_pizzaria"; // substitua por algo mais seguro
 
-mongoose.connect("mongodb://127.0.0.1:27017/pizzaria", {
-  useNewUrlParser: true,
-  useUnifiedTopology: true,
-})
-.then(() => console.log("✅ Conectado ao MongoDB"))
-.catch(err => console.error("❌ Erro ao conectar:", err))
+// 📦 Rota de cadastro
+app.post("/api/auth/signup", async (req, res) => {
+  const { email, password } = req.body;
 
-const UsuarioSchema = new mongoose.Schema({
-  email: { type: String, required: true, unique: true },
-  senha: { type: String, required: true }
-})
-
-const Usuario = mongoose.model("Usuario", UsuarioSchema)
-
-app.post("/register", async (req, res) => {
-  const { email, senha } = req.body
-
-  try {
-    const existe = await Usuario.findOne({ email })
-    if (existe) {
-      return res.json({ success: false, message: "Usuário já cadastrado ❌" })
-    }
-
-    const novoUsuario = new Usuario({ email, senha })
-    await novoUsuario.save()
-
-    res.json({ success: true, message: "Cadastro realizado com sucesso ✅" })
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Erro no servidor" })
+  const userExists = await db.get("SELECT * FROM users WHERE email = ?", [email]);
+  if (userExists) {
+    return res.status(400).json({ error: "Usuário já existe" });
   }
-})
 
-app.post("/login", async (req, res) => {
-  const { email, senha } = req.body
+  const hash = await bcrypt.hash(password, 10);
+  await db.run("INSERT INTO users (email, password) VALUES (?, ?)", [email, hash]);
 
-  try {
-    const usuario = await Usuario.findOne({ email, senha })
-    if (usuario) {
-      res.json({ success: true, message: "Login realizado com sucesso 🍕" })
-    } else {
-      res.json({ success: false, message: "Email ou senha inválidos ❌" })
-    }
-  } catch (err) {
-    res.status(500).json({ success: false, message: "Erro no servidor" })
-  }
-})
+  const token = jwt.sign({ email }, SECRET, { expiresIn: "2h" });
+  res.json({ token });
+});
 
-app.listen(PORT, () => {
-  console.log(`🚀 Servidor rodando em http://localhost:${PORT}`)
-})
+// 📦 Rota de login
+app.post("/api/auth/login", async (req, res) => {
+  const { email, password } = req.body;
+
+  const user = await db.get("SELECT * FROM users WHERE email = ?", [email]);
+  if (!user) return res.status(400).json({ error: "Usuário não encontrado" });
+
+  const valid = await bcrypt.compare(password, user.password);
+  if (!valid) return res.status(400).json({ error: "Senha incorreta" });
+
+  const token = jwt.sign({ email }, SECRET, { expiresIn: "2h" });
+  res.json({ token });
+});
+
+// 📦 Rota para verificar token
+app.get("/api/auth/verify", (req, res) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: "Token ausente" });
+
+  const token = authHeader.split(" ")[1];
+  jwt.verify(token, SECRET, (err, decoded) => {
+    if (err) return res.status(401).json({ error: "Token inválido" });
+    res.json({ email: decoded.email });
+  });
+});
+
+app.listen(5000, () => console.log("✅ Servidor rodando em http://localhost:5000"));
