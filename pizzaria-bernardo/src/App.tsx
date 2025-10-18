@@ -1,17 +1,28 @@
-import { Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { AuthProvider } from "./components/AuthContext";
+import Principal from "./pages/Principal";
 import Login from "./pages/Login";
 import Cadastro from "./pages/Cadastro";
-import Principal from "./pages/Principal";
-import './App.css';
+import CadPedido from "./pages/CadPedido";
+import FinalPedido from "./pages/FinalPedido";
+import { CartProvider } from "./context/CartContext";
 
-const App = () => {
+function App() {
   return (
-      <Routes>
-        <Route path="/" element={<Login />} />
-        <Route path="/cadastro" element={<Cadastro />} />
-        <Route path="/principal" element={<Principal />} />
-      </Routes>
+    <CartProvider>
+    <AuthProvider>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Login />} />
+          <Route path="/signup" element={<Cadastro/>} />
+          <Route path="/principal" element={<Principal />} />
+          <Route path="/pedido" element={<CadPedido />} />
+          <Route path="/finalpedido" element={<FinalPedido />} />
+        </Routes>
+    </BrowserRouter>
+    </AuthProvider>
+    </CartProvider>
   );
-};
+}
 
 export default App;
