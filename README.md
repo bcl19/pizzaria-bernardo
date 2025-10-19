@@ -121,7 +121,7 @@ Front-end rodando em `http://localhost:5173`
 │  ├─ server.js          # Servidor Express
 │  ├─ database.db        # Banco SQLite
 │  └─ package.json
-├─ pizzaria-bernardo/
+├─ pizzaria-frontend/
 │  ├─ src/
 │  │  ├─ pages/
 │  │  │  ├─ Login.tsx
