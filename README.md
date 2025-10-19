@@ -12,10 +12,8 @@ Ideal para aprender conceitos de autenticação, CRUD, gerenciamento de estado e
 
 ---
 
-## 🌐 Demo (opcional)
-
-Se tiver deploy:
-[🌟 Acesse o projeto no navegador](https://seu-deploy-aqui.com)
+## 🌐 Demo 
+[🌟 Acesse o projeto no navegador](https://pizzaria-bernardo.vercel.app)
 
 ---
 
@@ -191,5 +189,4 @@ Front-end rodando em `http://localhost:5173`
 <img src="pizzaria-frontend/src/img/readme3.png" alt="Carrinho de pedidos" width="600"/>
 <img src="pizzaria-frontend/src/img/readme4.png" alt="Finalização de pedido" width="600"/>
 
-
-
+---
