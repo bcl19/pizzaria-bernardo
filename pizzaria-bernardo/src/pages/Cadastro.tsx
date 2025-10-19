@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { TextField, Button, Paper, Typography, Box } from "@mui/material";
-import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
+import { cadastrarUsuario } from "../api";
+import { AxiosError } from "axios";
 
 const Signup: React.FC = () => {
-  const { signup } = useAuth();
   const navigate = useNavigate();
 
   const [nome, setNome] = useState("");
@@ -12,19 +12,23 @@ const Signup: React.FC = () => {
   const [password, setPassword] = useState("");
   const [erro, setErro] = useState("");
 
-  const handleSignup = (e: React.FormEvent) => {
+  const handleSignup = async (e: React.FormEvent) => {
     e.preventDefault();
+
     if (!nome || !email || !password) {
       setErro("Preencha todos os campos!");
       return;
     }
 
-    const sucesso = signup(nome, email, password);
-    if (sucesso) {
-      alert("Cadastro realizado com sucesso! Faça login.");
-      navigate("/");
-    } else {
-      setErro("Usuário já existe. Tente outro e-mail.");
+    try {
+      const response = await cadastrarUsuario(email, password);
+      if (response) {
+        alert("Cadastro realizado com sucesso! Faça login.");
+        navigate("/");
+      }
+    } catch (error) {
+      const err = error as AxiosError<{ error?: string }>;
+      setErro(err.response?.data?.error || "Erro no servidor. Tente novamente mais tarde.");
     }
   };
 
@@ -48,6 +52,7 @@ const Signup: React.FC = () => {
         <Typography variant="h5" gutterBottom color="primary">
           Criar Conta 🍕
         </Typography>
+
         <form onSubmit={handleSignup}>
           <TextField
             fullWidth

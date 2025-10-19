@@ -1,18 +1,25 @@
 import React from "react";
-import { Paper, Typography, Button, Grid, Divider } from "@mui/material";
+import { Paper, Typography, Button, Divider } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
+import Grid from "@mui/material/GridLegacy";
+import axios from "axios";
 
 const FinalPedido: React.FC = () => {
   const { pedidos, limparCarrinho } = useCart();
   const navigate = useNavigate();
 
-  const handleConfirmar = () => {
-    alert("Todos os pedidos foram finalizados com sucesso!");
+  const handleConfirmar = async () => {
+  try {
+    await axios.post("http://localhost:5000/api/pedidos", { pedidos });
+    alert("Todos os pedidos foram enviados e finalizados com sucesso!");
     limparCarrinho();
     navigate("/");
-  };
-
+  } catch (err) {
+    console.error("Erro ao enviar pedidos:", err);
+    alert("Erro ao enviar pedidos. Tente novamente.");
+  }
+};
   return (
     <Grid container spacing={3} justifyContent="center" sx={{ p: 3 }}>
       <Grid item xs={12} sm={8} md={6}>

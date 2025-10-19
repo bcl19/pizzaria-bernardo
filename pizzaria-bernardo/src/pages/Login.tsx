@@ -11,14 +11,14 @@ const Login: React.FC = () => {
   const [password, setPassword] = useState("");
   const [erro, setErro] = useState("");
 
-  const handleLogin = (e: React.FormEvent) => {
+  const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
     if (!email || !password) {
       setErro("Preencha todos os campos!");
       return;
     }
 
-    const sucesso = login(email, password);
+    const sucesso = await login(email, password);
     if (sucesso) {
       navigate("/principal");
     } else {

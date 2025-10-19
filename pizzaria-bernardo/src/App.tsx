@@ -16,7 +16,7 @@ function App() {
           <Route path="/" element={<Login />} />
           <Route path="/signup" element={<Cadastro/>} />
           <Route path="/principal" element={<Principal />} />
-          <Route path="/pedido" element={<CadPedido />} />
+          <Route path="/cadpedido" element={<CadPedido />} />
           <Route path="/finalpedido" element={<FinalPedido />} />
         </Routes>
     </BrowserRouter>

@@ -1,7 +1,8 @@
 import React from "react";
-
-import { Paper, Typography, Button, Grid } from "@mui/material";
+import Grid from "@mui/material/GridLegacy";
+import { Paper, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
+
 
 const produtos = [
   { nome: "Pizza Margherita", descricao: "Tomate, mussarela e manjericão fresco." },
@@ -16,7 +17,7 @@ const Principal: React.FC = () => {
   const navigate = useNavigate();
 
   const handleSelecionarPizza = (pizza: string) => {
-    navigate("/pedido", { state: { pizza } });
+    navigate("/cadpedido", { state: { pizza } });
   };
 
   return (

@@ -25,23 +25,41 @@ let db;
   await db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      nome TEXT,
       email TEXT UNIQUE,
       password TEXT
     )
   `);
+
+  // Cria também a tabela pedidos
+  await db.run(`
+    CREATE TABLE IF NOT EXISTS pedidos (
+      id INTEGER PRIMARY KEY AUTOINCREMENT,
+      pizza TEXT,
+      quantidade INTEGER,
+      observacoes TEXT
+    )
+  `);
+
+  console.log("📦 Banco de dados inicializado!");
 })();
 
-// 📦 Rota de cadastro
-app.get("/api/auth/signup", async (req, res) => {
+// 🔹 Rota de cadastro de usuário
+app.post("/api/auth/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Email e senha são obrigatórios" });
+    const { nome, email, password } = req.body;
+    if (!nome || !email || !password)
+      return res.status(400).json({ error: "Nome, email e senha são obrigatórios" });
 
     const userExists = await db.get("SELECT * FROM users WHERE email = ?", [email]);
-    if (userExists) return res.status(400).json({ error: "Usuário já existe" });
+    if (userExists)
+      return res.status(400).json({ error: "Usuário já existe" });
 
     const hash = await bcrypt.hash(password, 10);
-    await db.run("INSERT INTO users (email, password) VALUES (?, ?)", [email, hash]);
+    await db.run(
+      "INSERT INTO users (nome, email, password) VALUES (?, ?, ?)",
+      [nome, email, hash]
+    );
 
     const token = jwt.sign({ email }, SECRET, { expiresIn: "2h" });
     res.json({ token });
@@ -51,27 +69,42 @@ app.get("/api/auth/signup", async (req, res) => {
   }
 });
 
-// 📦 Rota de login
-app.post("/api/auth/login", async (req, res) => {
+// 📦 Rota para salvar pedidos
+app.post("/api/pedidos", async (req, res) => {
   try {
-    const { email, password } = req.body;
-    if (!email || !password) return res.status(400).json({ error: "Email e senha são obrigatórios" });
+    const { pedidos } = req.body;
 
-    const user = await db.get("SELECT * FROM users WHERE email = ?", [email]);
-    if (!user) return res.status(400).json({ error: "Usuário não encontrado" });
+    if (!pedidos || !Array.isArray(pedidos)) {
+      return res.status(400).json({ error: "Lista de pedidos inválida" });
+    }
 
-    const valid = await bcrypt.compare(password, user.password);
-    if (!valid) return res.status(400).json({ error: "Senha incorreta" });
+    for (const p of pedidos) {
+      console.log("🍕 Pedido recebido:", p);
+      await db.run(
+        "INSERT INTO pedidos (pizza, quantidade, observacoes) VALUES (?, ?, ?)",
+        [p.pizza, p.quantidade, p.observacoes || ""]
+      );
+    }
 
-    const token = jwt.sign({ email }, SECRET, { expiresIn: "2h" });
-    res.json({ token });
+    res.json({ message: "Pedidos recebidos com sucesso!" });
   } catch (err) {
-    console.error("Erro no login:", err);
+    console.error("Erro ao processar pedidos:", err);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-// 📦 Rota para verificar token
+// 📦 Listar pedidos
+app.get("/api/pedidos", async (req, res) => {
+  try {
+    const pedidos = await db.all("SELECT * FROM pedidos");
+    res.json(pedidos);
+  } catch (err) {
+    console.error("Erro ao buscar pedidos:", err);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
+// 📦 Verificar token
 app.get("/api/auth/verify", (req, res) => {
   try {
     const authHeader = req.headers.authorization;
@@ -88,7 +121,7 @@ app.get("/api/auth/verify", (req, res) => {
   }
 });
 
-// 🔹 Rota raiz para teste
+// 🔹 Rota raiz
 app.get("/", (req, res) => {
   res.send("Servidor rodando ✅");
 });

@@ -1,5 +1,5 @@
 /* eslint-disable react-refresh/only-export-components */
-import React, { createContext, useState, type ReactNode } from "react";
+import React, { createContext, useState, type ReactNode, useCallback } from "react";
 
 export interface Pedido {
   pizza: string;
@@ -22,8 +22,14 @@ interface Props {
 export const CartProvider: React.FC<Props> = ({ children }) => {
   const [pedidos, setPedidos] = useState<Pedido[]>([]);
 
-  const adicionarPedido = (pedido: Pedido) => setPedidos([...pedidos, pedido]);
-  const limparCarrinho = () => setPedidos([]);
+  // ✅ useCallback evita recriar funções a cada renderização
+  const adicionarPedido = useCallback((pedido: Pedido) => {
+    setPedidos((prev) => [...prev, pedido]);
+  }, []);
+
+  const limparCarrinho = useCallback(() => {
+    setPedidos([]);
+  }, []);
 
   return (
     <CartContext.Provider value={{ pedidos, adicionarPedido, limparCarrinho }}>
