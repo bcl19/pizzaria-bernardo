@@ -73,7 +73,7 @@ Se tiver deploy:
 ### 1️⃣ Clonar o repositório
 
 ```bash
-git clone https://github.com/seu-usuario/pizzaria-do-dev.git
+git clone https://github.com/bcl19/pizzaria-bernardo
 cd pizzaria-do-dev
 ```
 
@@ -82,14 +82,14 @@ cd pizzaria-do-dev
 #### Back-end
 
 ```bash
-cd backend
+cd pizzaria-backend
 npm install
 ```
 
 #### Front-end
 
 ```bash
-cd ../frontend
+cd pizzaria-frontend
 npm install
 ```
 
@@ -142,7 +142,7 @@ Front-end rodando em `http://localhost:5173`
 
 ---
 
-## 🔗 Endpoints principais
+## 🔗 Endpoints Principais (API)
 
 ### Usuários
 
@@ -179,10 +179,17 @@ Front-end rodando em `http://localhost:5173`
 
 ---
 
-## 🖼 Capturas de tela
+## Capturas de tela
 
-* **Login e Cadastro**
-* **Catálogo de Pizzas**
-* **Carrinho e Finalização**
+### Login e Cadastro
+<img src="pizzaria-frontend/src/img/readme1.png" width="600"/>
 
-*(adicione screenshots do seu projeto para deixar o README mais visual)*
+### Catálogo de Pizzas
+<img src="pizzaria-frontend/src/img/readme2.png" alt="Tela do catálogo de pizzas" width="600"/>
+
+### Carrinho e Finalização
+<img src="pizzaria-frontend/src/img/readme3.png" alt="Carrinho de pedidos" width="600"/>
+<img src="pizzaria-frontend/src/img/readme4.png" alt="Finalização de pedido" width="600"/>
+
+
+
