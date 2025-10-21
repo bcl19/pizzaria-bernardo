@@ -72,7 +72,7 @@ Ideal para aprender conceitos de autenticação, CRUD, gerenciamento de estado e
 
 ```bash
 git clone https://github.com/bcl19/pizzaria-bernardo
-cd pizzaria-do-dev
+cd pizzaria-bernardo
 ```
 
 ### 2️⃣ Instalar dependências
@@ -115,27 +115,44 @@ Front-end rodando em `http://localhost:5173`
 
 ```
 
-├─ pizzaria-backend/
-│  ├─ server.js          # Servidor Express
-│  ├─ database.db        # Banco SQLite
-│  └─ package.json
-├─ pizzaria-frontend/
-│  ├─ src/
-│  │  ├─ pages/
-│  │  │  ├─ Login.tsx
-│  │  │  ├─ Cadastro.tsx
-│  │  │  ├─ Principal.tsx
-│  │  │  ├─ CadPedido.tsx
-│  │  │  └─ FinalPedido.tsx
-│  │  ├─ context/
-│  │  │  └─ CartContext.tsx
-│  │  ├─ components/
-│  │  │  └─ AuthContext.tsx
-│  │  ├─ api/
-│  │  │  └─ index.ts
-│  │  └─ App.tsx
-│  └─ package.json
-└─ README.md
+pizzaria-backend/
+├─ models/
+├─ routes/
+├─ database.db
+├─ package-lock.json
+├─ package.json
+└─ server.js
+pizzaria-frontend/
+├─ public/
+├─ src/
+│  ├─ api/
+│  │  └─ index.ts
+│  ├─ components/
+│  │  └─ CartContext.tsx
+│  ├─ context/
+│  │  ├─ CartContext.tsx
+│  │  ├─ CartProvider.tsx
+│  │  └─ types.ts
+│  ├─ hooks/
+│  │  ├─ useAuth.ts
+│  │  └─ useCart.ts
+│  ├─ img/
+│  │  ├─ pizza.jpeg
+│  │  ├─ pizza1.png
+│  │  └─ pizzaria.jpeg
+│  ├─ pages/
+│  │  ├─ Cadastro.tsx
+│  │  ├─ CadPedido.tsx
+│  │  ├─ FinalPedido.tsx
+│  │  ├─ Login.tsx
+│  │  └─ Principal.tsx
+│  ├─ App.css
+│  ├─ App.tsx
+│  ├─ main.tsx
+│  └─ theme.ts
+├─ package-lock.json
+└─ package.json
+
 ```
 
 ---
@@ -177,16 +194,30 @@ Front-end rodando em `http://localhost:5173`
 
 ---
 
-## Capturas de tela
+## Capturas de tela do projeto
 
 ### Login e Cadastro
-<img src="pizzaria-frontend/src/img/readme1.png" width="600"/>
+<img src="pizzaria-frontend/src/img/readme1.png" width="300"/>
 
 ### Catálogo de Pizzas
-<img src="pizzaria-frontend/src/img/readme2.png" alt="Tela do catálogo de pizzas" width="600"/>
+<img src="pizzaria-frontend/src/img/readme2.png" alt="Tela do catálogo de pizzas" width="300"/>
 
 ### Carrinho e Finalização
-<img src="pizzaria-frontend/src/img/readme3.png" alt="Carrinho de pedidos" width="600"/>
-<img src="pizzaria-frontend/src/img/readme4.png" alt="Finalização de pedido" width="600"/>
+<img src="pizzaria-frontend/src/img/readme3.png" alt="Carrinho de pedidos" width="300"/>
+<img src="pizzaria-frontend/src/img/readme4.png" alt="Finalização de pedido" width="300"/>
+
+---
+## Autor
+
+* Bernardo Chimelli Luz
+* 📧 contatobernardo14@gmail.com
+
+* 💼 Desenvolvedor Full Stack em constante formação
+* 🎓 Engenharia de Software — 5º período
+---
+
+## 🏁 Status do Projeto
+
+* 🚧 Em desenvolvimento — novas funcionalidades e atualizações para melhorias em breve!
 
 ---
