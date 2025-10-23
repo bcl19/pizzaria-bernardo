@@ -4,6 +4,8 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import Grid from "@mui/material/GridLegacy";
 import CartButton from "../components/CartButton";
+import HomeButton from "../components/HomeButton";
+
 
 type LocationState = {
   pizza: string;
@@ -28,6 +30,9 @@ const CadPedido: React.FC = () => {
   return (
     <>
       <CartButton />
+      <HomeButton/>
+
+
       <Grid container spacing={3} justifyContent="center" sx={{ p: 3 }}>
         <Grid item xs={12} sm={8} md={6}>
           <Paper elevation={5} sx={{ p: 4, borderRadius: 2 }}>

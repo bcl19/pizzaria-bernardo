@@ -5,6 +5,8 @@ import { useCart } from "../hooks/useCart";
 import Grid from "@mui/material/GridLegacy";
 import axios from "axios";
 import CartButton from "../components/CartButton";
+import HomeButton from "../components/HomeButton";
+
 
 const FinalPedido: React.FC = () => {
   const { pedidos, limparCarrinho } = useCart();
@@ -25,6 +27,8 @@ const FinalPedido: React.FC = () => {
   return (
     <>
       <CartButton />
+      <HomeButton/>
+
       <Grid container spacing={3} justifyContent="center" sx={{ p: 3 }}>
         <Grid item xs={12} sm={8} md={6}>
           <Paper elevation={5} sx={{ p: 4, borderRadius: 2 }}>

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { cadastrarUsuario } from "../api";
 import { AxiosError } from "axios";
 import CartButton from "../components/CartButton";
+import HomeButton from "../components/HomeButton";
 
 const Signup: React.FC = () => {
   const navigate = useNavigate();
@@ -39,6 +40,8 @@ const Signup: React.FC = () => {
   return (
     <>
       <CartButton />
+      <HomeButton/>
+
       <Box
         display="flex"
         justifyContent="center"

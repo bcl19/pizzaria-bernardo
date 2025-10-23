@@ -12,6 +12,7 @@ import {
 } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import CartButton from "../components/CartButton";
+import HomeButton from "../components/HomeButton";
 
 interface Pizza {
   id: number;
@@ -34,9 +35,12 @@ const Principal: React.FC = () => {
   };
 
   return (
-    <Box sx={{ backgroundColor: "#fff3f3", minHeight: "100vh", p: 4 }}>
-      <CartButton />
-
+<>  
+  <CartButton/>
+  <HomeButton/>
+    
+      
+      <Box sx={{ backgroundColor: "#fff3f3", minHeight: "100vh", p: 4 }}>
       <Typography
         variant="h4"
         color="primary"
@@ -84,7 +88,7 @@ const Principal: React.FC = () => {
         ))}
       </Grid>
     </Box>
-  );
+ </> );
 };
 
 export default Principal;

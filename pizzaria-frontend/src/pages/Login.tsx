@@ -5,7 +5,6 @@ import {
   Paper,
   Typography,
   Box,
-  IconButton,
   Badge,
 } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
@@ -13,6 +12,8 @@ import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import { motion, useAnimation } from "framer-motion";
+import HomeButton from "../components/HomeButton";
+import CartButton from "../components/CartButton";
 
 const Login: React.FC = () => {
   const { login } = useAuth();
@@ -53,6 +54,11 @@ const Login: React.FC = () => {
   };
 
   return (
+  <>  
+    <CartButton/>
+    <HomeButton/>
+
+
     <Box
       display="flex"
       justifyContent="center"
@@ -64,29 +70,11 @@ const Login: React.FC = () => {
         px: 2,
       }}
     >
-      {/* 🛒 Carrinho flutuante fixo no canto superior direito */}
-      <IconButton
-        color="primary"
-        onClick={() => navigate("/finalpedido")}
-        sx={{
-          position: "fixed",
-          top: 10,
-          right: 10,
-          zIndex: 1000,
-          backgroundColor: "#fff",
-          boxShadow: 2,
-          "&:hover": {
-            backgroundColor: "#ffeaea",
-          },
-        }}
-      >
         <Badge badgeContent={totalPedidos} color="error">
           <motion.div animate={controls}>
             <ShoppingCartIcon fontSize="medium" />
           </motion.div>
         </Badge>
-      </IconButton>
-
       {/* Formulário de login */}
       <Paper
         elevation={5}
@@ -147,7 +135,7 @@ const Login: React.FC = () => {
         </form>
       </Paper>
     </Box>
-  );
+ </> );
 };
 
 export default Login;
