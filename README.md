@@ -25,6 +25,7 @@ Ideal para aprender conceitos de autenticação, CRUD, gerenciamento de estado e
 * Material-UI (MUI)
 * React Router DOM
 * Axios
+* Framer-motion
 
 **Back-end**
 
@@ -58,6 +59,7 @@ Ideal para aprender conceitos de autenticação, CRUD, gerenciamento de estado e
 
 * Responsiva e moderna usando **Material-UI**.
 * Feedback visual para ações como cadastro, login e finalização.
+* Interface animada nos icones com **Framer-Motion**
 
 ---
 
