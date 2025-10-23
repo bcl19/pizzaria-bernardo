@@ -12,8 +12,8 @@ const HomeButton: React.FC = () => {
       onClick={() => navigate("/")}
       sx={{
         position: "fixed",
-        top: 10,
-        left: 10,
+        top: 20,
+        left: 20,
         zIndex: 1000,
         backgroundColor: "#fff",
         boxShadow: 2,

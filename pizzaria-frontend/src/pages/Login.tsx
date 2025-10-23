@@ -72,7 +72,7 @@ const Login: React.FC = () => {
     >
         <Badge badgeContent={totalPedidos} color="error">
           <motion.div animate={controls}>
-            <ShoppingCartIcon fontSize="medium" />
+            <ShoppingCartIcon fontSize="small" />
           </motion.div>
         </Badge>
       {/* Formulário de login */}
