@@ -5,6 +5,7 @@ import axios, { AxiosError } from "axios";
 export interface User {
   nome: string;
   email: string;
+  password: string
 }
 
 export interface AuthResponse {

@@ -21,7 +21,7 @@ let db;
     driver: sqlite3.Database,
   });
 
-  // Cria a tabela users se não existir
+  // Tabela de usuários
   await db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,35 +31,61 @@ let db;
     )
   `);
 
-  // Cria também a tabela pedidos
+  // Tabela de pedidos
   await db.run(`
     CREATE TABLE IF NOT EXISTS pedidos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
+      user_id INTEGER,
       pizza TEXT,
       quantidade INTEGER,
-      observacoes TEXT
+      observacoes TEXT,
+      FOREIGN KEY(user_id) REFERENCES users(id)
     )
   `);
 
   console.log("📦 Banco de dados inicializado!");
 })();
 
-// 🔹 Rota de cadastro de usuário
+// 🔹 Middleware de autenticação JWT
+const authMiddleware = async (req, res, next) => {
+  const authHeader = req.headers.authorization;
+  if (!authHeader) return res.status(401).json({ error: "Token ausente" });
+
+  const token = authHeader.split(" ")[1];
+  try {
+    const decoded = jwt.verify(token, SECRET);
+    const user = await db.get("SELECT * FROM users WHERE email = ?", [decoded.email]);
+    if (!user) return res.status(401).json({ error: "Usuário não encontrado" });
+    req.user = user;
+    next();
+  } catch (err) {
+    return res.status(401).json({ error: "Token inválido" });
+  }
+};
+
+// 🔹 Cadastro
 app.post("/api/auth/signup", async (req, res) => {
   try {
-    const { nome, email, password } = req.body;
-    if (!nome || !email || !password)
+    console.log("📝 req.body signup:", req.body);
+
+    const nome = req.body.nome?.trim();
+    const email = req.body.email?.trim();
+    const password = req.body.password?.trim();
+
+    if (!nome || !email || !password) {
+      console.log("Erro: algum campo vazio!", { nome, email, password });
       return res.status(400).json({ error: "Nome, email e senha são obrigatórios" });
+    }
 
     const userExists = await db.get("SELECT * FROM users WHERE email = ?", [email]);
-    if (userExists)
-      return res.status(400).json({ error: "Usuário já existe" });
+    if (userExists) return res.status(400).json({ error: "Usuário já existe" });
 
     const hash = await bcrypt.hash(password, 10);
-    await db.run(
-      "INSERT INTO users (nome, email, password) VALUES (?, ?, ?)",
-      [nome, email, hash]
-    );
+    await db.run("INSERT INTO users (nome, email, password) VALUES (?, ?, ?)", [
+      nome,
+      email,
+      hash,
+    ]);
 
     const token = jwt.sign({ email }, SECRET, { expiresIn: "2h" });
     res.json({ token });
@@ -69,8 +95,32 @@ app.post("/api/auth/signup", async (req, res) => {
   }
 });
 
-// 📦 Rota para salvar pedidos
-app.post("/api/pedidos", async (req, res) => {
+// 🔹 Login
+app.post("/api/auth/login", async (req, res) => {
+  try {
+    console.log("📝 req.body login:", req.body);
+
+    const email = req.body.email?.trim();
+    const password = req.body.password?.trim();
+
+    if (!email || !password) return res.status(400).json({ error: "Email e senha obrigatórios" });
+
+    const user = await db.get("SELECT * FROM users WHERE email = ?", [email]);
+    if (!user) return res.status(400).json({ error: "Usuário não encontrado" });
+
+    const isValid = await bcrypt.compare(password, user.password);
+    if (!isValid) return res.status(400).json({ error: "Senha incorreta" });
+
+    const token = jwt.sign({ email }, SECRET, { expiresIn: "2h" });
+    res.json({ token });
+  } catch (err) {
+    console.error("Erro no login:", err);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
+// 🔹 Salvar pedidos
+app.post("/api/pedidos", authMiddleware, async (req, res) => {
   try {
     const { pedidos } = req.body;
 
@@ -79,44 +129,26 @@ app.post("/api/pedidos", async (req, res) => {
     }
 
     for (const p of pedidos) {
-      console.log("🍕 Pedido recebido:", p);
       await db.run(
-        "INSERT INTO pedidos (pizza, quantidade, observacoes) VALUES (?, ?, ?)",
-        [p.pizza, p.quantidade, p.observacoes || ""]
+        "INSERT INTO pedidos (user_id, pizza, quantidade, observacoes) VALUES (?, ?, ?, ?)",
+        [req.user.id, p.pizza, p.quantidade, p.observacoes || ""]
       );
     }
 
-    res.json({ message: "Pedidos recebidos com sucesso!" });
+    res.json({ message: "Pedidos salvos com sucesso!" });
   } catch (err) {
-    console.error("Erro ao processar pedidos:", err);
+    console.error("Erro ao salvar pedidos:", err);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
 
-// 📦 Listar pedidos
-app.get("/api/pedidos", async (req, res) => {
+// 🔹 Listar pedidos do usuário
+app.get("/api/pedidos", authMiddleware, async (req, res) => {
   try {
-    const pedidos = await db.all("SELECT * FROM pedidos");
+    const pedidos = await db.all("SELECT * FROM pedidos WHERE user_id = ?", [req.user.id]);
     res.json(pedidos);
   } catch (err) {
     console.error("Erro ao buscar pedidos:", err);
-    res.status(500).json({ error: "Erro interno do servidor" });
-  }
-});
-
-// 📦 Verificar token
-app.get("/api/auth/verify", (req, res) => {
-  try {
-    const authHeader = req.headers.authorization;
-    if (!authHeader) return res.status(401).json({ error: "Token ausente" });
-
-    const token = authHeader.split(" ")[1];
-    jwt.verify(token, SECRET, (err, decoded) => {
-      if (err) return res.status(401).json({ error: "Token inválido" });
-      res.json({ email: decoded.email });
-    });
-  } catch (err) {
-    console.error("Erro ao verificar token:", err);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 });

@@ -1,15 +1,14 @@
 const express = require("express");
 const bcrypt = require("bcrypt");
 const Usuario = require("../models/Usuario");
-
 const router = express.Router();
 
 // 📍 Rota de cadastro
 router.post("/register", async (req, res) => {
   try {
-    const { email, senha } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !senha) {
+    if (!email || !password) {
       return res.status(400).json({ success: false, message: "Preencha todos os campos ❌" });
     }
 
@@ -18,8 +17,8 @@ router.post("/register", async (req, res) => {
       return res.json({ success: false, message: "Usuário já cadastrado ❌" });
     }
 
-    const senhaHash = await bcrypt.hash(senha, 10);
-    const novoUsuario = new Usuario({ email, senha: senhaHash });
+    const senhaHash = await bcrypt.hash(password, 10);
+    const novoUsuario = new Usuario({ email, password: senhaHash });
     await novoUsuario.save();
 
     res.json({ success: true, message: "Cadastro realizado com sucesso ✅" });
@@ -32,9 +31,9 @@ router.post("/register", async (req, res) => {
 // 📍 Rota de login
 router.post("/login", async (req, res) => {
   try {
-    const { email, senha } = req.body;
+    const { email, password } = req.body;
 
-    if (!email || !senha) {
+    if (!email || !password) {
       return res.status(400).json({ success: false, message: "Preencha todos os campos ❌" });
     }
 
@@ -43,7 +42,7 @@ router.post("/login", async (req, res) => {
       return res.json({ success: false, message: "Usuário não encontrado ❌" });
     }
 
-    const senhaValida = await bcrypt.compare(senha, usuario.senha);
+    const senhaValida = await bcrypt.compare(password, usuario.password);
     if (!senhaValida) {
       return res.json({ success: false, message: "Senha incorreta ❌" });
     }

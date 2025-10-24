@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {TextField, Button,Paper, Typography,  Box, Badge,} from "@mui/material";
+import { TextField, Button, Paper, Typography, Box, Badge } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useAuth } from "../hooks/useAuth";
 import { useNavigate } from "react-router-dom";
@@ -16,6 +16,7 @@ const LoginPage: React.FC = () => {
   const [erro, setErro] = useState("");
 
   const controls = useAnimation();
+  const textControls = useAnimation();
   const totalPedidos = pedidos.reduce((acc, p) => acc + p.quantidade, 0);
 
   // 🎬 Animação do carrinho
@@ -27,6 +28,15 @@ const LoginPage: React.FC = () => {
       });
     }
   }, [totalPedidos, controls]);
+
+  // 🎬 Animação do texto de boas-vindas
+  useEffect(() => {
+    textControls.start({
+      opacity: 1,
+      y: 0,
+      transition: { type: "spring", stiffness: 80, damping: 12, delay: 0.3 },
+    });
+  }, [textControls]);
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -45,7 +55,6 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-  <>  
     <Box
       display="flex"
       justifyContent="center"
@@ -57,11 +66,33 @@ const LoginPage: React.FC = () => {
         px: 2,
       }}
     >
-        <Badge badgeContent={totalPedidos} color="error">
-          <motion.div animate={controls}>
-            <ShoppingCartIcon fontSize="small" />
-          </motion.div>
-        </Badge>
+      {/* Texto bonito animado */}
+      <motion.div
+        initial={{ opacity: 0, y: -50 }}
+        animate={textControls}
+        style={{ position: "absolute", top: "10%", width: "100%", zIndex: 1 }}
+      >
+        <Typography
+          variant="h3"
+          component="h1"
+          align="center"
+          sx={{
+            color: "#e28b19ff",
+            fontWeight: "bold",
+            textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
+          }}
+        >
+          🍕 Bem-vindo à Pizzaria do Dev! 🍕
+        </Typography>
+      </motion.div>
+
+      {/* Badge do carrinho */}
+      <Badge badgeContent={totalPedidos} color="error" sx={{ position: "absolute", top: 20, right: 20 }}>
+        <motion.div animate={controls}>
+          <ShoppingCartIcon fontSize="small" />
+        </motion.div>
+      </Badge>
+
       {/* Formulário de login */}
       <Paper
         elevation={5}
@@ -71,6 +102,7 @@ const LoginPage: React.FC = () => {
           maxWidth: 380,
           textAlign: "center",
           borderRadius: 3,
+          zIndex: 2,
         }}
       >
         <Typography variant="h5" color="primary" fontWeight="bold" mb={2}>
@@ -101,28 +133,17 @@ const LoginPage: React.FC = () => {
             </Typography>
           )}
 
-          <Button
-            type="submit"
-            fullWidth
-            variant="contained"
-            color="primary"
-            sx={{ mt: 3 }}
-          >
+          <Button type="submit" fullWidth variant="contained" color="primary" sx={{ mt: 3 }}>
             Entrar
           </Button>
 
-          <Button
-            fullWidth
-            color="secondary"
-            sx={{ mt: 2 }}
-            onClick={() => navigate("/signup")}
-          >
+          <Button fullWidth color="secondary" sx={{ mt: 2 }} onClick={() => navigate("/signup")}>
             Criar nova conta
           </Button>
         </form>
       </Paper>
     </Box>
- </> );
+  );
 };
 
 export default LoginPage;

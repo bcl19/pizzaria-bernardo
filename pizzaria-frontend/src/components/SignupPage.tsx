@@ -21,7 +21,7 @@ const SignupPage: React.FC = () => {
     }
 
     try {
-      const response = await cadastrarUsuario(email, password);
+      const response = await cadastrarUsuario(nome,email,password);
       if (response) {
         alert("Cadastro realizado com sucesso! Faça login.");
         navigate("/");
