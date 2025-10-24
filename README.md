@@ -69,6 +69,7 @@ Ideal para aprender conceitos de autenticação, CRUD, gerenciamento de estado e
 
 * Node.js >= 18
 * npm >= 9
+* Vite 
 
 ### 1️⃣ Clonar o repositório
 
@@ -211,13 +212,16 @@ pizzaria-frontend/
 
 ### Login e Cadastro
 <img src="pizzaria-frontend/src/img/readme1.png" width="300"/>
-
-### Catálogo de Pizzas
 <img src="pizzaria-frontend/src/img/readme2.png" alt="Tela do catálogo de pizzas" width="300"/>
 
-### Carrinho e Finalização
+### Catálogo de Pizzas
 <img src="pizzaria-frontend/src/img/readme3.png" alt="Carrinho de pedidos" width="300"/>
+
+### Carrinho e Finalização
+
 <img src="pizzaria-frontend/src/img/readme4.png" alt="Finalização de pedido" width="300"/>
+<img src="pizzaria-frontend/src/img/readme5.png" alt="Finalização de pedido" width="300"/>
+
 
 ---
 ## Autor
