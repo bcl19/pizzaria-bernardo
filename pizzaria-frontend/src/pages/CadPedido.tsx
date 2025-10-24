@@ -4,8 +4,6 @@ import HomeButton from "../components/HomeButton";
 import CadPage from "../components/CadPage";
 
 const CadPedido: React.FC = () => {
-  
-
   return (
     <>
       <CartButton />

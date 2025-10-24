@@ -226,7 +226,7 @@ pizzaria-frontend/
 ---
 ## Autor
 
-* Bernardo Chimelli Luz
+* Bernardo Chimelli Luz (bcl19)
 * 📧 contatobernardo14@gmail.com
 
 * 💼 Desenvolvedor Full Stack em constante formação
