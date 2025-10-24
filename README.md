@@ -125,35 +125,46 @@ pizzaria-backend/
 ├─ package.json
 └─ server.js
 pizzaria-frontend/
-├─ public/
-├─ src/
-│  ├─ api/
-│  │  └─ index.ts
-│  ├─ components/
-│  │  └─ CartContext.tsx
-│  ├─ context/
-│  │  ├─ CartContext.tsx
-│  │  ├─ CartProvider.tsx
-│  │  └─ types.ts
-│  ├─ hooks/
-│  │  ├─ useAuth.ts
-│  │  └─ useCart.ts
-│  ├─ img/
-│  │  ├─ pizza.jpeg
-│  │  ├─ pizza1.png
-│  │  └─ pizzaria.jpeg
-│  ├─ pages/
-│  │  ├─ Cadastro.tsx
-│  │  ├─ CadPedido.tsx
-│  │  ├─ FinalPedido.tsx
-│  │  ├─ Login.tsx
-│  │  └─ Principal.tsx
-│  ├─ App.css
-│  ├─ App.tsx
-│  ├─ main.tsx
-│  └─ theme.ts
-├─ package-lock.json
-└─ package.json
+│
+├── public/
+│   └── favicon.ico
+│
+├── src/
+│   ├── api/
+│   │   └── (arquivos de comunicação com o backend)
+│   │
+│   ├── components/
+│   │   ├── CadPage.tsx          # Página de cadastro do pedido (componente)
+│   │   ├── CartButton.tsx       # Botão flutuante do carrinho
+│   │   ├── FinalPage.tsx        # Tela final do pedido
+│   │   ├── HomeButton.tsx       # Botão para retornar à página inicial
+│   │   ├── LoginPage.tsx        # Tela de login (com layout e estilo próprio)
+│   │   ├── PrincipalPage.tsx    # Tela principal (seleção de pizzas)
+│   │   └── SignupPage.tsx       # Tela de cadastro de usuário
+│   │
+│   ├── context/
+│   │   ├── AuthContext.tsx      # Contexto de autenticação
+│   │   ├── CartContext.tsx      # Contexto do carrinho de pedidos
+│   │   ├── CartProvider.tsx     # Provedor global do carrinho
+│   │   └── types.ts             # Tipos e interfaces globais
+│   │
+│   ├── hooks/
+│   │   ├── useAuth.ts           # Hook personalizado de autenticação
+│   │   └── useCart.ts           # Hook personalizado do carrinho
+│   │
+│   ├── img/                     # Imagens utilizadas no projeto
+│   │
+│   ├── pages/
+│   │   ├── Cadastro.tsx         # Página para cadastro de usuário
+│   │   ├── CadPedido.tsx        # Página para montar o pedido
+│   │   ├── FinalPedido.tsx      # Página de finalização do pedido
+│   │   ├── Login.tsx            # Página de login do usuário
+│   │   └── Principal.tsx        # Página principal de seleção de pizzas
+│   │
+│   ├── App.tsx                  # Arquivo principal do aplicativo
+│   └── App.css                  # Estilos globais
+│
+└── index.html
 
 ```
 
