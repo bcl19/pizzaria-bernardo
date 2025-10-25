@@ -48,6 +48,9 @@ const FinalPage: React.FC = () => {
                 <Typography variant="body1">
                   <strong>Observações:</strong> {pedido.observacoes || "Nenhuma"}
                 </Typography>
+                <Typography variant="body1">
+                  <strong>Preço:</strong> {pedido.observacoes || "Nenhuma"}
+                </Typography>
               </div>
             ))}
 

@@ -9,13 +9,14 @@ interface Pizza {
   id: number;
   nome: string;
   imagem: string;
+  preço: number;
 }
 
-const pizzas: Pizza[] = [
-  { id: 1, nome: "Calabresa", imagem: "/img/calabresa.jpg" },
-  { id: 2, nome: "Mussarela", imagem: "/img/mussarela.jpg" },
-  { id: 3, nome: "Portuguesa", imagem: "/img/portuguesa.jpg" },
-  { id: 4, nome: "Frango com Catupiry", imagem: "/img/frango.jpg" },
+export const pizzas: Pizza[] = [
+  { id: 1, nome: "Calabresa", imagem: "/img/calabresa.jpg", preço: 38.50 },
+  { id: 2, nome: "Mussarela", imagem: "/img/mussarela.jpg", preço: 34.90 },
+  { id: 3, nome: "Portuguesa", imagem: "/img/portuguesa.jpg", preço: 34.90 },
+  { id: 4, nome: "Frango com Catupiry", imagem: "/img/frango.jpg", preço: 36.90 },
 ];
 
 const PrincipalPage: React.FC = () => {
@@ -47,7 +48,7 @@ const PrincipalPage: React.FC = () => {
           component="h1"
           align="center"
           sx={{
-            color: "#d32f2f",
+            color: "#f88e04ff",
             fontWeight: "bold",
             textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
           }}
@@ -56,7 +57,6 @@ const PrincipalPage: React.FC = () => {
         </Typography>
       </motion.div>
 
-      {/* Grid de pizzas */}
       <Grid container spacing={3} justifyContent="center" sx={{ mt: 10 }}>
         {pizzas.map((pizza) => (
           <Grid item xs={12} sm={6} md={4} lg={3} key={pizza.id}>

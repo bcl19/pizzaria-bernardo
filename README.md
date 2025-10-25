@@ -1,4 +1,4 @@
-# 🍕 Pizzaria do Dev by bcl19
+# 🍕 PizzaVerso by bcl19
 
 ![React](https://img.shields.io/badge/React-18.3.0-blue?logo=react\&logoColor=white)
 ![TypeScript](https://img.shields.io/badge/TypeScript-5.3.2-blue?logo=typescript\&logoColor=white)
@@ -7,7 +7,7 @@
 
 > Sistema completo de pizzaria com cadastro, login, carrinho e finalização de pedidos.
 
-A **Pizzaria do Dev** é um projeto full-stack feito com **React + TypeScript** no front-end e **Node.js + Express + SQLite** no back-end.
+A **PizzaVerso** é um projeto full-stack feito com **React + TypeScript MaterialUI** no front-end e **Node.js + Express + SQLite** no back-end.
 Ideal para aprender conceitos de autenticação, CRUD, gerenciamento de estado e integração front-end/back-end.
 
 ---

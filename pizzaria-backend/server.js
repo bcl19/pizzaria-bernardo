@@ -8,12 +8,12 @@ const sqlite3 = require("sqlite3").verbose();
 const { open } = require("sqlite");
 
 const app = express();
-const SECRET = "bcl19"; // troque por algo mais seguro
+const SECRET = "bcl19"; // ⚠️ use uma variável de ambiente em produção
 
 app.use(cors());
 app.use(bodyParser.json());
 
-// 🔹 Inicializa o banco SQLite
+// 🔹 Inicialização do banco
 let db;
 (async () => {
   db = await open({
@@ -21,7 +21,7 @@ let db;
     driver: sqlite3.Database,
   });
 
-  // Tabela de usuários
+  // 🔸 Tabela de usuários
   await db.run(`
     CREATE TABLE IF NOT EXISTS users (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -31,7 +31,7 @@ let db;
     )
   `);
 
-  // Tabela de pedidos
+  // 🔸 Tabela de pedidos (agora inclui preço)
   await db.run(`
     CREATE TABLE IF NOT EXISTS pedidos (
       id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -39,41 +39,43 @@ let db;
       pizza TEXT,
       quantidade INTEGER,
       observacoes TEXT,
+      preço REAL,
       FOREIGN KEY(user_id) REFERENCES users(id)
     )
   `);
 
-  console.log("📦 Banco de dados inicializado!");
+  console.log("📦 Banco de dados inicializado com sucesso!");
 })();
 
 // 🔹 Middleware de autenticação JWT
 const authMiddleware = async (req, res, next) => {
   const authHeader = req.headers.authorization;
-  if (!authHeader) return res.status(401).json({ error: "Token ausente" });
+  if (!authHeader)
+    return res.status(401).json({ error: "Token ausente. Faça login novamente." });
 
   const token = authHeader.split(" ")[1];
+
   try {
     const decoded = jwt.verify(token, SECRET);
     const user = await db.get("SELECT * FROM users WHERE email = ?", [decoded.email]);
     if (!user) return res.status(401).json({ error: "Usuário não encontrado" });
-    req.user = user;
+
+    req.user = user; // adiciona o usuário à requisição
     next();
   } catch (err) {
-    return res.status(401).json({ error: "Token inválido" });
+    console.error("Erro no middleware JWT:", err);
+    return res.status(401).json({ error: "Token inválido ou expirado" });
   }
 };
 
-// 🔹 Cadastro
+// 🔹 Rota de cadastro (signup)
 app.post("/api/auth/signup", async (req, res) => {
   try {
-    console.log("📝 req.body signup:", req.body);
-
     const nome = req.body.nome?.trim();
     const email = req.body.email?.trim();
     const password = req.body.password?.trim();
 
     if (!nome || !email || !password) {
-      console.log("Erro: algum campo vazio!", { nome, email, password });
       return res.status(400).json({ error: "Nome, email e senha são obrigatórios" });
     }
 
@@ -95,15 +97,14 @@ app.post("/api/auth/signup", async (req, res) => {
   }
 });
 
-// 🔹 Login
+// 🔹 Rota de login
 app.post("/api/auth/login", async (req, res) => {
   try {
-    console.log("📝 req.body login:", req.body);
-
     const email = req.body.email?.trim();
     const password = req.body.password?.trim();
 
-    if (!email || !password) return res.status(400).json({ error: "Email e senha obrigatórios" });
+    if (!email || !password)
+      return res.status(400).json({ error: "Email e senha obrigatórios" });
 
     const user = await db.get("SELECT * FROM users WHERE email = ?", [email]);
     if (!user) return res.status(400).json({ error: "Usuário não encontrado" });
@@ -119,19 +120,19 @@ app.post("/api/auth/login", async (req, res) => {
   }
 });
 
-// 🔹 Salvar pedidos
+// 🔹 Salvar um ou mais pedidos
 app.post("/api/pedidos", authMiddleware, async (req, res) => {
   try {
     const { pedidos } = req.body;
 
-    if (!pedidos || !Array.isArray(pedidos)) {
+    if (!pedidos || !Array.isArray(pedidos) || pedidos.length === 0) {
       return res.status(400).json({ error: "Lista de pedidos inválida" });
     }
 
     for (const p of pedidos) {
       await db.run(
-        "INSERT INTO pedidos (user_id, pizza, quantidade, observacoes) VALUES (?, ?, ?, ?)",
-        [req.user.id, p.pizza, p.quantidade, p.observacoes || ""]
+        "INSERT INTO pedidos (user_id, pizza, quantidade, observacoes, preço) VALUES (?, ?, ?, ?, ?)",
+        [req.user.id, p.pizza, p.quantidade, p.observacoes || "", p.preço || 0]
       );
     }
 
@@ -142,13 +143,27 @@ app.post("/api/pedidos", authMiddleware, async (req, res) => {
   }
 });
 
-// 🔹 Listar pedidos do usuário
+// 🔹 Buscar pedidos do usuário logado
 app.get("/api/pedidos", authMiddleware, async (req, res) => {
   try {
-    const pedidos = await db.all("SELECT * FROM pedidos WHERE user_id = ?", [req.user.id]);
+    const pedidos = await db.all(
+      "SELECT id, pizza, quantidade, observacoes, preço FROM pedidos WHERE user_id = ?",
+      [req.user.id]
+    );
     res.json(pedidos);
   } catch (err) {
     console.error("Erro ao buscar pedidos:", err);
+    res.status(500).json({ error: "Erro interno do servidor" });
+  }
+});
+
+// 🔹 Limpar pedidos (opcional)
+app.delete("/api/pedidos", authMiddleware, async (req, res) => {
+  try {
+    await db.run("DELETE FROM pedidos WHERE user_id = ?", [req.user.id]);
+    res.json({ message: "Pedidos apagados com sucesso!" });
+  } catch (err) {
+    console.error("Erro ao limpar pedidos:", err);
     res.status(500).json({ error: "Erro interno do servidor" });
   }
 });
@@ -158,5 +173,5 @@ app.get("/", (req, res) => {
   res.send("Servidor rodando ✅");
 });
 
-// 🔹 Inicia o servidor
-app.listen(5000, () => console.log("✅ Servidor rodando em http://localhost:5000"));
+// 🔹 Inicialização do servidor
+app.listen(5000, () => console.log("🚀 Servidor rodando em http://localhost:5000"));

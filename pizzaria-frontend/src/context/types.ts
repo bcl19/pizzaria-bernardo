@@ -9,3 +9,9 @@ export type CartContextType = {
   adicionarPedido: (pedido: Pedido) => void;
   limparCarrinho: () => void;
 };
+
+
+
+
+
+
