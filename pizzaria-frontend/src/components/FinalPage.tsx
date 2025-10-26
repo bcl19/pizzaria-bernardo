@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import Grid from "@mui/material/GridLegacy";
 import axios from "axios";
-
+import {} from "../context/pizzasData";
 
 
 const FinalPage: React.FC = () => {
@@ -49,7 +49,7 @@ const FinalPage: React.FC = () => {
                   <strong>Observações:</strong> {pedido.observacoes || "Nenhuma"}
                 </Typography>
                 <Typography variant="body1">
-                  <strong>Preço:</strong> {pedido.observacoes || "Nenhuma"}
+                  <strong>Preço:</strong> {pedido.preço}
                 </Typography>
               </div>
             ))}

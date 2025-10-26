@@ -1,23 +1,17 @@
 import React, { useEffect } from "react";
-import { Card, CardContent, CardActions, Typography, Button, CardMedia, Box } from "@mui/material";
+import {
+  Card,
+  CardContent,
+  CardActions,
+  Typography,
+  Button,
+  CardMedia,
+  Box,
+} from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { motion, useAnimation } from "framer-motion";
 import Grid from "@mui/material/GridLegacy";
-
-
-interface Pizza {
-  id: number;
-  nome: string;
-  imagem: string;
-  preço: number;
-}
-
-export const pizzas: Pizza[] = [
-  { id: 1, nome: "Calabresa", imagem: "/img/calabresa.jpg", preço: 38.50 },
-  { id: 2, nome: "Mussarela", imagem: "/img/mussarela.jpg", preço: 34.90 },
-  { id: 3, nome: "Portuguesa", imagem: "/img/portuguesa.jpg", preço: 34.90 },
-  { id: 4, nome: "Frango com Catupiry", imagem: "/img/frango.jpg", preço: 36.90 },
-];
+import { pizzas } from "../context/pizzasData"; // <-- importamos de outro arquivo
 
 const PrincipalPage: React.FC = () => {
   const navigate = useNavigate();
@@ -37,7 +31,7 @@ const PrincipalPage: React.FC = () => {
 
   return (
     <Box sx={{ backgroundColor: "#fff3f3", minHeight: "100vh", p: 4, position: "relative" }}>
-      {/* Texto animado no topo */}
+      {/* Texto animado */}
       <motion.div
         initial={{ opacity: 0, y: -50 }}
         animate={textControls}
@@ -68,15 +62,13 @@ const PrincipalPage: React.FC = () => {
                 "&:hover": { transform: "scale(1.05)" },
               }}
             >
-              <CardMedia
-                component="img"
-                height="160"
-                image={pizza.imagem}
-                alt={pizza.nome}
-              />
+              <CardMedia component="img" height="160" image={pizza.imagem} alt={pizza.nome} />
               <CardContent>
                 <Typography variant="h6" fontWeight="bold" textAlign="center">
                   {pizza.nome}
+                </Typography>
+                <Typography variant="body2" textAlign="center" color="text.secondary">
+                  R$ {pizza.preço.toFixed(2)}
                 </Typography>
               </CardContent>
               <CardActions sx={{ justifyContent: "center", pb: 2 }}>

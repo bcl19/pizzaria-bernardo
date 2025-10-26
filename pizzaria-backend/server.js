@@ -9,6 +9,7 @@ const { open } = require("sqlite");
 
 const app = express();
 const SECRET = "bcl19"; // ⚠️ use uma variável de ambiente em produção
+const PORT = process.env.PORT || 3000;
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -174,4 +175,4 @@ app.get("/", (req, res) => {
 });
 
 // 🔹 Inicialização do servidor
-app.listen(5000, () => console.log("🚀 Servidor rodando em http://localhost:5000"));
+app.listen(PORT, () => console.log('🚀 Servidor rodando em http://localhost:${PORT}'));

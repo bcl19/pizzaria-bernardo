@@ -3,7 +3,7 @@ import { Paper, Typography, Button, TextField } from "@mui/material";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useCart } from "../hooks/useCart";
 import Grid from "@mui/material/GridLegacy";
-import { pizzas } from "./PrincipalPage";
+import { pizzas } from "../context/pizzasData";
 
 type LocationState = {
   pizza: string;
