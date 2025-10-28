@@ -82,7 +82,7 @@ const LoginPage: React.FC = () => {
             textShadow: "2px 2px 4px rgba(0,0,0,0.2)",
           }}
         >
-          🍕 Bem-vindo à Pizzaria do Dev! 🍕
+          🍕 Bem-vindo ao PizzaVerso 🍕
         </Typography>
       </motion.div>
 

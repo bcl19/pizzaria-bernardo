@@ -122,7 +122,6 @@ pizzaria-backend/
 ├─ models/
 ├─ routes/
 ├─ database.db
-├─ package-lock.json
 ├─ package.json
 └─ server.js
 pizzaria-frontend/

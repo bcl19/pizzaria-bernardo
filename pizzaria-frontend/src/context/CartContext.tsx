@@ -17,6 +17,7 @@ interface CartContextType {
   carregarPedidos: () => Promise<void>;
 }
 
+// eslint-disable-next-line react-refresh/only-export-components
 export const CartContext = createContext<CartContextType | undefined>(undefined);
 
 export const CartProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
