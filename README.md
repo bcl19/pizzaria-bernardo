@@ -154,7 +154,6 @@ pizzaria-frontend/
    │   ├─ Login.tsx
    │   └─ Principal.tsx
    ├─ App.tsx
-   
 
 ```
 
